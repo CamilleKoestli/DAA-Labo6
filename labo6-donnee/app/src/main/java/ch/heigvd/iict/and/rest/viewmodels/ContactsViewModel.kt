@@ -1,9 +1,12 @@
 package ch.heigvd.iict.and.rest.viewmodels
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import ch.heigvd.iict.and.rest.ContactsRepository
+import ch.heigvd.iict.and.rest.models.Contact
 import kotlinx.coroutines.launch
 
 class ContactsViewModel(private val repository: ContactsRepository) : ViewModel() {
@@ -22,6 +25,16 @@ class ContactsViewModel(private val repository: ContactsRepository) : ViewModel(
             // TODO
         }
     }
+
+    // TODO vérifier
+    private val _selectedContact = MutableLiveData<Contact?>()
+    val selectedContact: LiveData<Contact?> get() = _selectedContact
+
+    fun selectContact(contact: Contact?) {
+        _selectedContact.value = contact
+    }
+
+
 
 }
 

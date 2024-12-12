@@ -33,4 +33,11 @@
     <string name="fragment_btn_create">Create</string>
     <string name="fragment_btn_save">Save</string>
 
+    <string-array name="contact_types">
+        <item>HOME</item>
+        <item>OFFICE</item>
+        <item>MOBILE</item>
+        <item>FAX</item>
+    </string-array>
+
 </resources>

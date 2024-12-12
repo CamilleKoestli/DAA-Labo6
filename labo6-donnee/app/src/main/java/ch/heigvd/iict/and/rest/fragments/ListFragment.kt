@@ -7,8 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.commit
 import androidx.recyclerview.widget.LinearLayoutManager
 import ch.heigvd.iict.and.rest.ContactsApplication
+import ch.heigvd.iict.and.rest.R
 import ch.heigvd.iict.and.rest.databinding.FragmentListBinding
 import ch.heigvd.iict.and.rest.viewmodels.ContactsViewModel
 import ch.heigvd.iict.and.rest.viewmodels.ContactsViewModelFactory
@@ -36,6 +38,12 @@ class ListFragment : Fragment() {
                 if(selectedContact != null) {
                     //FIXME - user clicks on selectedContact, we want to edit it
                     Toast.makeText(requireActivity(), "TODO - Edition de ${selectedContact.firstname} ${selectedContact.name}", Toast.LENGTH_SHORT).show()
+
+                    // Set the selected contact in the ViewModel
+                    contactsViewModel.selectContact(selectedContact)
+
+                    // Navigate to the ContactEditFragment
+                    navigateToContactEditFragment()
                 }
             }
         }
@@ -55,6 +63,23 @@ class ListFragment : Fragment() {
             }
         }
 
+        // Handle the FloatingActionButton to create a new contact
+        /*
+        binding.fab.setOnClickListener {
+            // Clear the selected contact in the ViewModel for creating a new contact
+            contactsViewModel.selectContact(null)
+
+            // Navigate to the ContactEditFragment
+            navigateToContactEditFragment()
+        }*/
+
+    }
+
+    private fun navigateToContactEditFragment() {
+        requireActivity().supportFragmentManager.commit {
+            replace(R.id.main_content_fragment, ContactEditFragment())
+            addToBackStack(null) // Add the transaction to the back stack
+        }
     }
 
     companion object {
