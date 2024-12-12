@@ -30,7 +30,7 @@ abstract class ContactsDatabase : RoomDatabase() {
                 val _instance = Room.databaseBuilder(context.applicationContext,
                 ContactsDatabase::class.java, "contacts.db")
                     .fallbackToDestructiveMigration()
-                    .addCallback(MyDatabaseCallback()) //FIXME - can be removed
+                    //.addCallback(MyDatabaseCallback()) //FIXME - can be removed
                     .build()
 
                 INSTANCE = _instance
@@ -38,7 +38,7 @@ abstract class ContactsDatabase : RoomDatabase() {
             }
         }
 
-        //FIXME - can be removed
+        /*//FIXME - can be removed
         private class MyDatabaseCallback : Callback() {
             override fun onCreate(db: SupportSQLiteDatabase) {
                 super.onCreate(db)
@@ -86,7 +86,7 @@ abstract class ContactsDatabase : RoomDatabase() {
                 }
 
             }
-        }
+        }*/
 
     }
 
