@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">Labo6</string>
+
+    <string name="main_fab_new_ctndesc">Button to create a new contact</string>
+
+    <string name="menu_populate">Populate</string>
+    <string name="menu_synchronize">Synchronize</string>
+
+    <string name="fragment_list_title">Contacts</string>
+    <string name="fragment_list_contacticon_ctndesc">Icon representing a contact</string>
+    <string name="fragment_list_contacttype_ctndesc">Icon representing type of phone number</string>
+    <string name="fragment_list_empty">No contact</string>
+
+    <string name="fragment_detail_title_new">New contact</string>
+    <string name="fragment_detail_title_edit">Edit contact</string>
+
+    <string name="fragment_name_subtitle">Name</string>
+    <string name="fragment_firstname_subtitle">Firstname</string>
+    <string name="fragment_email_subtitle">E-Mail</string>
+    <string name="fragment_birthday_subtitle">Birthday</string>
+    <string name="fragment_address_subtitle">Address</string>
+    <string name="fragment_zip_subtitle">Zip</string>
+    <string name="fragment_city_subtitle">City</string>
+    <string name="fragment_phonetype_subtitle">Phone type</string>
+    <string name="fragment_phonetype_home">Home</string>
+    <string name="fragment_phonetype_office">Office</string>
+    <string name="fragment_phonetype_mobile">Mobile</string>
+    <string name="fragment_phonetype_fax">Fax</string>
+    <string name="fragment_phonenumber_subtitle">Phone number</string>
+
+    <string name="fragment_btn_cancel">Cancel</string>
+    <string name="fragment_btn_delete">Delete</string>
+    <string name="fragment_btn_create">Create</string>
+    <string name="fragment_btn_save">Save</string>
+
+</resources>

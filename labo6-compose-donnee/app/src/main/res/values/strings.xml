@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">Labo6</string>
+
+    <string name="main_fab_new_ctndesc">Button to create a new contact</string>
+
+    <string name="menu_populate">Populate</string>
+    <string name="menu_synchronize">Synchronize</string>
+
+    <string name="screen_list_title">Contacts</string>
+    <string name="screen_list_contacticon_ctndesc">Icon representing a contact</string>
+    <string name="screen_list_contacttype_ctndesc">Icon representing type of phone number</string>
+    <string name="screen_list_empty">No contact</string>
+
+    <string name="screen_detail_title_new">New contact</string>
+    <string name="screen_detail_title_edit">Edit contact</string>
+
+    <string name="screen_detail_name_subtitle">Name</string>
+    <string name="screen_detail_firstname_subtitle">Firstname</string>
+    <string name="screen_detail_email_subtitle">E-Mail</string>
+    <string name="screen_detail_birthday_subtitle">Birthday</string>
+    <string name="screen_detail_address_subtitle">Address</string>
+    <string name="screen_detail_zip_subtitle">Zip</string>
+    <string name="screen_detail_city_subtitle">City</string>
+    <string name="screen_detail_phonetype_subtitle">Phone type</string>
+    <string name="phonetype_home">Home</string>
+    <string name="phonetype_office">Office</string>
+    <string name="phonetype_mobile">Mobile</string>
+    <string name="phonetype_fax">Fax</string>
+    <string name="screen_detail_phonenumber_subtitle">Phone number</string>
+
+    <string name="screen_detail_btn_cancel">Cancel</string>
+    <string name="screen_detail_btn_delete">Delete</string>
+    <string name="screen_detail_btn_create">Create</string>
+    <string name="screen_detail_btn_save">Save</string>
+
+</resources>

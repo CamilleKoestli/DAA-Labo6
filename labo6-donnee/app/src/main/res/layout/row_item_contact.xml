@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/list_item_height"
+    android:padding="@dimen/list_item_padding"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:id="@+id/contact_image"
+        android:layout_width="@dimen/list_item_icon_size"
+        android:layout_height="@dimen/list_item_icon_size"
+        android:src="@drawable/contact"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:tint="@android:color/darker_gray"
+        app:flow_horizontalBias="0"
+        android:contentDescription="@string/fragment_list_contacticon_ctndesc" />
+
+    <ImageView
+        android:id="@+id/contact_phonenumber_type"
+        android:layout_width="@dimen/list_item_icon_size"
+        android:layout_height="@dimen/list_item_icon_size"
+        android:src="@android:color/transparent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/fragment_list_contacttype_ctndesc" />
+
+    <TextView
+        android:id="@+id/contact_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/contact_phonenumber"
+        app:layout_constraintEnd_toStartOf="@id/contact_phonenumber_type"
+        app:layout_constraintStart_toEndOf="@+id/contact_image"
+        app:layout_constraintVertical_chainStyle="packed"
+        android:layout_marginStart="@dimen/list_item_elements_padding"
+        android:layout_marginEnd="@dimen/list_item_elements_padding"
+        android:lines="1"
+        android:maxLines="1"
+        android:ellipsize="end"
+        tools:text="Titre" />
+
+    <TextView
+        android:id="@+id/contact_phonenumber"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/contact_name"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/contact_phonenumber_type"
+        app:layout_constraintStart_toEndOf="@+id/contact_image"
+        app:layout_constraintVertical_chainStyle="packed"
+        android:layout_marginStart="@dimen/list_item_elements_padding"
+        android:layout_marginEnd="@dimen/list_item_elements_padding"
+        android:lines="1"
+        android:maxLines="1"
+        android:ellipsize="end"
+        tools:text="021 111 22 33" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
