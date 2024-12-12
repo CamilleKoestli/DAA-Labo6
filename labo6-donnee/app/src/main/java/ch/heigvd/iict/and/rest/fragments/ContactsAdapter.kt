@@ -51,9 +51,13 @@ class ContactsAdapter(contacts : List<Contact>, private val clickListener: OnIte
             name.text = "${contact.name} ${contact.firstname}"
             phonenumber.text = "${contact.phoneNumber}"
 
-            //FIXME color may depend on item sync status
-            val colRes = android.R.color.holo_green_dark
-            image.setColorFilter(ContextCompat.getColor(image.context, colRes))
+            // Change the image color based on sync status
+            val colorRes = if (contact.syncStatus == true) {
+                android.R.color.holo_green_dark // Green for synchronized
+            } else {
+                android.R.color.holo_orange_dark // Orange for unsynchronized
+            }
+            image.setColorFilter(ContextCompat.getColor(image.context, colorRes))
 
             when(contact.type) {
                 PhoneType.HOME -> type.setImageResource(R.drawable.phone)
@@ -91,7 +95,8 @@ class ContactsDiffCallBack(private val oldList: List<Contact>, private val newLi
                 oldContact.zip == newContact.zip &&
                 oldContact.city == newContact.city &&
                 oldContact.type == newContact.type &&
-                oldContact.phoneNumber == newContact.phoneNumber
+                oldContact.phoneNumber == newContact.phoneNumber &&
+                oldContact.syncStatus == newContact.syncStatus
     }
 
 }
