@@ -1,7 +1,8 @@
 package ch.heigvd.iict.and.rest
 
 import android.app.Application
-import ch.heigvd.iict.and.rest.database.ContactsDatabase
+import ch.heigvd.iict.and.rest.repository.ContactsDatabase
+import ch.heigvd.iict.and.rest.repository.ContactsRepository
 
 class ContactsApplication : Application() {
 

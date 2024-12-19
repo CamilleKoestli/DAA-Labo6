@@ -52,6 +52,21 @@
         android:layout_height="wrap_content"
         android:hint="Phone Number" />
 
+    <TextView
+        android:id="@+id/birthday"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Birthday"
+        android:padding="8dp"
+        android:background="@android:color/darker_gray"
+        android:textColor="@android:color/black" />
+
+    <Button
+        android:id="@+id/birthdayPicker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Pick Birthday" />
+
     <Button
         android:id="@+id/saveButton"
         android:layout_width="match_parent"

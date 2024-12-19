@@ -1,6 +1,7 @@
-package ch.heigvd.iict.and.rest
+package ch.heigvd.iict.and.rest.repository
 
 import ch.heigvd.iict.and.rest.database.ContactsDao
+import ch.heigvd.iict.and.rest.models.Contact
 
 class ContactsRepository(private val contactsDao: ContactsDao) {
 
@@ -8,6 +9,11 @@ class ContactsRepository(private val contactsDao: ContactsDao) {
 
     companion object {
         private val TAG = "ContactsRepository"
+    }
+
+    // Insère un contact dans la base de données locale
+    suspend fun insert(contact: Contact) {
+        contactsDao.insert(contact)
     }
 
 }

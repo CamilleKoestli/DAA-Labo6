@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import ch.heigvd.iict.and.rest.R
 import ch.heigvd.iict.and.rest.viewmodels.ContactsViewModel
 
-class ContactEditFragment : Fragment(R.layout.fragment_contact_edit){
+class ContactEditFragment : Fragment(R.layout.activity_create_contact){
     private lateinit var viewModel: ContactsViewModel
 
     override fun onCreateView(
