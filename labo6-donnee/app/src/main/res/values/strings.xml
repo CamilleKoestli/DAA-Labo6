@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Labo6</string>
+    <string name="app_name">REST Labo</string>
 
     <string name="main_fab_new_ctndesc">Button to create a new contact</string>
 
@@ -32,6 +32,25 @@
     <string name="fragment_btn_delete">Delete</string>
     <string name="fragment_btn_create">Create</string>
     <string name="fragment_btn_save">Save</string>
+    <string name="new_contact_title">New Contact</string>
+    <string name="name_title">Name</string>
+    <string name="firstname_title">Firstname</string>
+    <string name="name_edit">Name</string>
+    <string name="firstname_edit">Firstname</string>
+    <string name="e_mail_title">E-Mail</string>
+    <string name="email_edit">Email</string>
+    <string name="birthday_title">Birthday</string>
+    <string name="birthday_edit">Birthday</string>
+    <string name="address_title">Address</string>
+    <string name="zip_title">Zip</string>
+    <string name="address_edit">Address</string>
+    <string name="zip_edit">Zip</string>
+    <string name="city_title">City</string>
+    <string name="city_edit">City</string>
+    <string name="phone_type_title">Phone type</string>
+    <string name="phone_number_title">Phone number</string>
+    <string name="phone_number_edit">Phone number</string>
+    <string name="new_contact">New contact</string>
 
     <string-array name="contact_types">
         <item>HOME</item>

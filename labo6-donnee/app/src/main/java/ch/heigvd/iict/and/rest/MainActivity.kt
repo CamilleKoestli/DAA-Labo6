@@ -7,8 +7,10 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.fragment.app.commit
 import ch.heigvd.iict.and.rest.databinding.ActivityMainBinding
 import ch.heigvd.iict.and.rest.fragments.CreateContactActivity
+import ch.heigvd.iict.and.rest.fragments.CreateContactFragment
 import ch.heigvd.iict.and.rest.viewmodels.ContactsViewModel
 import ch.heigvd.iict.and.rest.viewmodels.ContactsViewModelFactory
 
@@ -25,8 +27,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.mainFabNew.setOnClickListener {
-            val intent = Intent(this, CreateContactActivity::class.java)
-            startActivity(intent)
+            // Navigate to CreateContactFragment
+            supportFragmentManager.commit{
+                replace(R.id.main_content_fragment, CreateContactFragment())
+                addToBackStack(null)
+            }
         }
     }
 
