@@ -12,7 +12,7 @@ import ch.heigvd.iict.and.rest.models.Contact
 interface ContactsDao {
 
     @Insert
-    fun insert(contact: Contact) : Long
+    suspend fun insert(contact: Contact) : Long
 
     @Update
     fun update(contact: Contact)

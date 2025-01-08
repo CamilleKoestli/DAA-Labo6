@@ -36,13 +36,11 @@ class CreateContactFragment : Fragment() {
         // Save button click logic
         binding.buttonSave.setOnClickListener {
             val name = binding.editName.text.toString()
-            /* TODO
             val firstname = binding.editFirstname.text.toString()
             val email = binding.editEmail.text.toString()
             val address = binding.editAddress.text.toString()
             val zip = binding.editZip.text.toString()
             val city = binding.editCity.text.toString()
-             */
             val phoneType = getSelectedPhoneType()
             val phoneNumber = binding.editPhone.text.toString()
 
@@ -57,13 +55,12 @@ class CreateContactFragment : Fragment() {
             val newContact = Contact(
                 id = null, // Let Room generate the ID
                 name = name,
-                // TODO
-                firstname = /* if (firstname.isNotEmpty()) firstname else */ null,
+                firstname = if (firstname.isNotEmpty()) firstname else null,
                 birthday = null,
-                email = /* if (email.isNotEmpty()) email else */ null,
-                address = /* if (address.isNotEmpty()) address else */ null,
-                zip = /* if (zip.isNotEmpty()) zip else */ null,
-                city = /* if (city.isNotEmpty()) city else */ null,
+                email = if (email.isNotEmpty()) email else null,
+                address = if (address.isNotEmpty()) address else null,
+                zip = if (zip.isNotEmpty()) zip else null,
+                city = if (city.isNotEmpty()) city else null,
                 type = phoneType,
                 phoneNumber = if (phoneNumber.isNotEmpty()) phoneNumber else null,
                 syncStatus = false // Default to unsynchronized
