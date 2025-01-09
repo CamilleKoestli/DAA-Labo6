@@ -13,6 +13,7 @@
         android:theme="@style/Theme.Labo6"
         tools:targetApi="33"
         android:name=".ContactsApplication">
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -22,10 +23,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!-- Déclaration de CreateContactActivity -->
-        <activity
-            android:name=".fragments.CreateContactActivity"
-            android:exported="true" />
-    </application>
 
+    </application>
 </manifest>

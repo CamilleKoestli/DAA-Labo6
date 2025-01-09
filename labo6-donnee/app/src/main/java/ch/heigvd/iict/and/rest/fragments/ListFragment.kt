@@ -77,7 +77,7 @@ class ListFragment : Fragment() {
 
     private fun navigateToContactEditFragment() {
         requireActivity().supportFragmentManager.commit {
-            replace(R.id.main_content_fragment, ContactEditFragment())
+            replace(R.id.main_content_fragment, EditContactFragment())
             addToBackStack(null) // Add the transaction to the back stack
         }
     }
