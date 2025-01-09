@@ -8,6 +8,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <!-- Back Arrow -->
+        <ImageView
+            android:id="@+id/back_arrow"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_arrow_back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/title_create_contact"
+            android:layout_marginEnd="8dp" />
+
         <!-- Title -->
         <TextView
             android:id="@+id/title_create_contact"

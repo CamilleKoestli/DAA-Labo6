@@ -33,6 +33,11 @@ class CreateContactFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Back arrow click logic
+        binding.backArrow.setOnClickListener {
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
+
         // Save button click logic
         binding.buttonSave.setOnClickListener {
             val name = binding.editName.text.toString()
