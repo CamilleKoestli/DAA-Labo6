@@ -26,7 +26,7 @@ class EditContactFragment : Fragment(R.layout.fragment_create_contact){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Spinner setup
+        /*// Spinner setup
         val spinner: Spinner = view.findViewById(R.id.type)
         ArrayAdapter.createFromResource(
             requireContext(),
@@ -35,6 +35,6 @@ class EditContactFragment : Fragment(R.layout.fragment_create_contact){
         ).also { adapter ->
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             spinner.adapter = adapter
-        }
+        }*/
     }
 }

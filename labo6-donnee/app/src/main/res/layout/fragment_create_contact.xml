@@ -4,74 +4,272 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp">
-    <EditText
-        android:id="@+id/name"
+
+    <TextView
+        android:id="@+id/list_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Name" />
-    <EditText
-        android:id="@+id/firstname"
+        android:textAppearance="?android:textAppearanceMedium"
+        android:text="@string/new_contact" />
+
+
+    <!-- Section Formulaire -->
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Firstname" />
-    <EditText
-        android:id="@+id/email"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Section Name -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/name_title"
+                    android:textAppearance="?attr/textAppearanceBody1"
+                    android:layout_gravity="center_vertical" />
+
+                <EditText
+                    android:id="@+id/name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:hint="@string/name_edit" />
+            </LinearLayout>
+
+            <!-- Section Firstname -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/firstname_title"
+                    android:textAppearance="?attr/textAppearanceBody1"
+                    android:layout_gravity="center_vertical" />
+
+                <EditText
+                    android:id="@+id/firstname"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:hint="@string/firstname_edit" />
+            </LinearLayout>
+
+            <!-- Section Email -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/e_mail_title"
+                    android:textAppearance="?attr/textAppearanceBody1"
+                    android:layout_gravity="center_vertical" />
+
+                <EditText
+                    android:id="@+id/email"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:hint="@string/email_edit" />
+            </LinearLayout>
+
+            <!-- Section Birthday -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/birthday_title"
+                    android:textAppearance="?attr/textAppearanceBody1"
+                    android:layout_gravity="center_vertical" />
+
+                <EditText
+                    android:id="@+id/birthday"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:hint="@string/birthday_edit"
+                    android:focusable="false" />
+            </LinearLayout>
+
+            <!-- Section Address -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/address_title"
+                    android:textAppearance="?attr/textAppearanceBody1"
+                    android:layout_gravity="center_vertical" />
+
+                <EditText
+                    android:id="@+id/address"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:hint="@string/address_edit" />
+            </LinearLayout>
+
+            <!-- Section Zip -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/zip_title"
+                    android:textAppearance="?attr/textAppearanceBody1"
+                    android:layout_gravity="center_vertical" />
+
+                <EditText
+                    android:id="@+id/zip"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:hint="@string/zip_edit" />
+            </LinearLayout>
+
+            <!-- Section City -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/city_title"
+                    android:textAppearance="?attr/textAppearanceBody1"
+                    android:layout_gravity="center_vertical" />
+
+                <EditText
+                    android:id="@+id/city"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:hint="@string/city_edit" />
+            </LinearLayout>
+
+            <!-- Section Phone Type -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/phone_type_title"
+                android:textAppearance="?attr/textAppearanceBody1"
+                android:layout_marginBottom="8dp" />
+
+            <RadioGroup
+                android:id="@+id/radio_group_phone_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/radio_home"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/fragment_phonetype_home" />
+
+                <RadioButton
+                    android:id="@+id/radio_office"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/fragment_phonetype_office" />
+
+                <RadioButton
+                    android:id="@+id/radio_mobile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/fragment_phonetype_mobile" />
+
+                <RadioButton
+                    android:id="@+id/radio_fax"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/fragment_phonetype_fax" />
+            </RadioGroup>
+
+            <!-- Section Phone Number -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/phone_number_title"
+                    android:textAppearance="?attr/textAppearanceBody1"
+                    android:layout_gravity="center_vertical" />
+
+                <EditText
+                    android:id="@+id/phoneNumber"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:hint="@string/phone_number_edit" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Boutons Cancel et Create -->
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Email" />
-    <EditText
-        android:id="@+id/address"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Address" />
-    <EditText
-        android:id="@+id/zip"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="ZIP" />
-    <EditText
-        android:id="@+id/city"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="City" />
-    <Spinner
-        android:id="@+id/type"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    <RadioGroup
-        android:id="@+id/radio_group_phone_type"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginStart="8dp" />
-    <EditText
-        android:id="@+id/phoneNumber"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Phone Number" />
-    <TextView
-        android:id="@+id/birthday"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Birthday"
-        android:padding="8dp"
-        android:background="@android:color/darker_gray"
-        android:textColor="@android:color/black" />
-    <Button
-        android:id="@+id/birthdayPicker"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Pick Birthday" />
-    <Button
-        android:id="@+id/saveButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Save" />
+        android:gravity="end"
+        android:layout_marginTop="16dp">
 
-    <Button
-        android:id="@+id/buttonCancel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/fragment_btn_cancel" />
+        <Button
+            android:id="@+id/cancelButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/fragment_btn_cancel" />
 
+        <Button
+            android:id="@+id/createButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/fragment_btn_create" />
+    </LinearLayout>
 </LinearLayout>

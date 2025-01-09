@@ -11,7 +11,6 @@
     <string name="fragment_list_contacttype_ctndesc">Icon representing type of phone number</string>
     <string name="fragment_list_empty">No contact</string>
 
-    <string name="fragment_detail_title_new">New contact</string>
     <string name="fragment_detail_title_edit">Edit contact</string>
 
     <string name="fragment_name_subtitle">Name</string>
