@@ -8,7 +8,7 @@ interface ContactsApiService {
     fun enroll(): Call<String> // Returns a UUID
 
     @GET("/contacts")
-    fun getAllContacts(): Call<List<Contact>>
+    fun getAllContacts(@Header("X-UUID") uuid: String): Call<List<Contact>>
 
     @GET("/contacts/{id}")
     fun getContact(@Path("id") id: Long): Call<Contact>

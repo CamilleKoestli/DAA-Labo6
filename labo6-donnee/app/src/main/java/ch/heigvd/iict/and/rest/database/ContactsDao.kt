@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import ch.heigvd.iict.and.rest.models.Contact
@@ -14,6 +15,7 @@ interface ContactsDao {
     @Insert
     suspend fun insert(contact: Contact) : Long
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(contacts: List<Contact>) {
         contacts.forEach { insert(it) }
     }

@@ -1,11 +1,13 @@
 package ch.heigvd.iict.and.rest.repository
 
 import android.content.Context
+import android.util.Log
 import ch.heigvd.iict.and.rest.database.ContactsDao
 import ch.heigvd.iict.and.rest.models.Contact
 import ch.heigvd.iict.and.rest.utils.SharedPrefsManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import retrofit2.Response
 
 class ContactsRepository(
     private val contactsDao: ContactsDao,
@@ -26,24 +28,31 @@ class ContactsRepository(
     suspend fun enroll() {
         withContext(Dispatchers.IO) {
             try {
-                // Obtenir un nouvel UUID depuis le serveur
-                val newUUID = ApiClient.service.enroll()
+                // 1. Appel à l'API pour obtenir un nouvel UUID
+                val enrollResponse: Response<String> = ApiClient.service.enroll().execute()
+                if (!enrollResponse.isSuccessful) {
+                    throw Exception("Failed to enroll: ${enrollResponse.errorBody()?.string()}")
+                }
+                val newUUID = enrollResponse.body() ?: throw Exception("Empty UUID response")
+                Log.d("Enroll", "new UUID: $newUUID")
 
-                // Effacer la base de données locale
+                // 2. Sauvegarde de l'UUID dans les SharedPreferences
+                SharedPrefsManager.setUUID(context, newUUID)
+
+                // 3. Suppression des contacts locaux
                 contactsDao.clearAllContacts()
 
-                // Sauvegarder l'UUID dans SharedPreferences
-                SharedPrefsManager.setUUID(context, newUUID.toString())
+                // 4. Récupération des contacts associés à l'UUID
+                val contactsResponse = ApiClient.service.getAllContacts(newUUID).execute()
+                Log.d("Enroll", "contactsResponse: $contactsResponse")
 
-                // Récupérer les contacts depuis le serveur
-                val serverContactsResponse = ApiClient.service.getAllContacts().execute()
-
-                if (!serverContactsResponse.isSuccessful) {
-                    throw Exception("Failed to fetch contacts: ${serverContactsResponse.errorBody()}")
+                if (!contactsResponse.isSuccessful) {
+                    throw Exception("Failed to fetch contacts: ${contactsResponse.errorBody()?.string()}")
                 }
+                val contacts = contactsResponse.body() ?: emptyList()
 
-                // Insérer les contacts dans la base locale
-                contactsDao.insertAll(serverContactsResponse.body()!!)
+                // 5. Insertion des contacts récupérés dans la base de données locale
+                contactsDao.insertAll(contacts)
 
             } catch (e: Exception) {
                 // Gérer les erreurs réseau
