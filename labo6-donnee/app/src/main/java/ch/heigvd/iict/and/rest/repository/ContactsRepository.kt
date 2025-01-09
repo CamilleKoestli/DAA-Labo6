@@ -77,4 +77,25 @@ class ContactsRepository(
         }
     }
 
+    suspend fun getContact(id: Long): Contact? {
+        return withContext(Dispatchers.IO) {
+            try {
+                val uuid = SharedPrefsManager.getUUID(context) // Récupérer le UUID
+                if (uuid == null) {
+                    throw Exception("UUID not found. Perform enrollment first.")
+                }
+
+                val response = ApiClient.service.getContactById(id, uuid).execute()
+                if (response.isSuccessful) {
+                    response.body() // Retourne le contact si tout est OK
+                } else {
+                    throw Exception("Failed to fetch contact: ${response.code()}")
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                null
+            }
+        }
+    }
+
 }

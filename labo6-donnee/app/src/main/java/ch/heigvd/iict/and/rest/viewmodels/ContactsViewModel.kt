@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import ch.heigvd.iict.and.rest.repository.ContactsRepository
 import ch.heigvd.iict.and.rest.models.Contact
@@ -66,6 +67,14 @@ class ContactsViewModel(private val repository: ContactsRepository) : ViewModel(
 
     fun selectContact(contact: Contact?) {
         _selectedContact.value = contact
+    }
+
+    fun getContact(id: Long): LiveData<Contact?> {
+        var contact = MutableLiveData<Contact?>()
+        viewModelScope.launch {
+            contact.postValue(repository.getContact(id))
+        }
+        return contact
     }
 
 }

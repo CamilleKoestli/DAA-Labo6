@@ -11,7 +11,10 @@ interface ContactsApiService {
     fun getAllContacts(@Header("X-UUID") uuid: String): Call<List<Contact>>
 
     @GET("/contacts/{id}")
-    fun getContact(@Path("id") id: Long): Call<Contact>
+    fun getContactById(
+        @Path("id") id: Long,
+        @Header("X-UUID") uuid: String
+    ): Call<Contact>
 
     @POST("/contacts")
     fun createContact(@Body contact: Contact): Call<Contact>
