@@ -15,6 +15,7 @@ constraintlayout = "2.2.0"
 retrofit = "2.9.0"
 room = "2.6.1"
 lifecycle = "2.8.7"
+navigationFragmentKtx = "2.8.5"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -37,6 +38,7 @@ androidx-lifecycle-runtime-ktx = {group = "androidx.lifecycle", name = "lifecycl
 androidx-lifecycle-viewmodel-ktx = {group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycle"}
 androidx-lifecycle-livedata-ktx = {group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "lifecycle"}
 androidx-lifecycle-common-java8 = {group = "androidx.lifecycle", name = "lifecycle-common-java8", version.ref = "lifecycle"}
+androidx-navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigationFragmentKtx" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

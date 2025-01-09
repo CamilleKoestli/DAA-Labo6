@@ -38,6 +38,28 @@ class ContactsViewModel(private val repository: ContactsRepository) : ViewModel(
         }
     }
 
+    fun updateContact(contact: Contact) {
+        viewModelScope.launch {
+            repository.update(contact)
+        }
+    }
+
+    fun delete(contact: Contact) {
+        viewModelScope.launch {
+            repository.delete(contact)
+        }
+    }
+
+    fun deleteContactById(id: Long) {
+        viewModelScope.launch {
+            repository.deleteContactById(id)
+        }
+    }
+
+    fun getContactById(id: Long): LiveData<Contact?> {
+        return repository.getContactById(id)
+    }
+
     // TODO vérifier
     private val _selectedContact = MutableLiveData<Contact?>()
     val selectedContact: LiveData<Contact?> get() = _selectedContact

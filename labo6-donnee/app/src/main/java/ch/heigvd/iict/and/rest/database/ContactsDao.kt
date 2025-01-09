@@ -26,6 +26,9 @@ interface ContactsDao {
     @Delete
     fun delete(contact: Contact)
 
+    @Query("DELETE FROM Contact WHERE id = :id")
+    suspend fun deleteContactById(id: Long)
+
     @Query("SELECT * FROM Contact")
     fun getAllContactsLiveData() : LiveData<List<Contact>>
 
@@ -33,7 +36,7 @@ interface ContactsDao {
     fun getAllContacts() : List<Contact>
 
     @Query("SELECT * FROM Contact WHERE id = :id")
-    fun getContactById(id : Long) : Contact?
+    fun getContactById(id : Long) : LiveData<Contact?>
 
     @Query("SELECT COUNT(*) FROM Contact")
     fun getCount() : Int

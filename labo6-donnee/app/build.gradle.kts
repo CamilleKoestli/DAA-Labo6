@@ -55,6 +55,7 @@ dependencies {
     // Room components
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
+    implementation(libs.androidx.navigation.fragment.ktx)
     ksp(libs.room.compiler)
     androidTestImplementation(libs.room.testing)
 

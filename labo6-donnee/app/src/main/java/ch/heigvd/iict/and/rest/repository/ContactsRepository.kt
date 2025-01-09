@@ -2,6 +2,7 @@ package ch.heigvd.iict.and.rest.repository
 
 import android.content.Context
 import android.util.Log
+import androidx.lifecycle.LiveData
 import ch.heigvd.iict.and.rest.database.ContactsDao
 import ch.heigvd.iict.and.rest.models.Contact
 import ch.heigvd.iict.and.rest.utils.SharedPrefsManager
@@ -20,9 +21,24 @@ class ContactsRepository(
         private val TAG = "ContactsRepository"
     }
 
-    // Insère un contact dans la base de données locale
     suspend fun insert(contact: Contact) {
         contactsDao.insert(contact)
+    }
+
+    suspend fun update(contact: Contact) {
+        contactsDao.update(contact)
+    }
+
+    suspend fun delete(contact: Contact) {
+        contactsDao.delete(contact)
+    }
+
+    suspend fun deleteContactById(id: Long) {
+        contactsDao.deleteContactById(id)
+    }
+
+    fun getContactById(id: Long): LiveData<Contact?> {
+        return contactsDao.getContactById(id)
     }
 
     suspend fun enroll() {
