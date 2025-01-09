@@ -14,6 +14,10 @@ interface ContactsDao {
     @Insert
     suspend fun insert(contact: Contact) : Long
 
+    suspend fun insertAll(contacts: List<Contact>) {
+        contacts.forEach { insert(it) }
+    }
+
     @Update
     fun update(contact: Contact)
 

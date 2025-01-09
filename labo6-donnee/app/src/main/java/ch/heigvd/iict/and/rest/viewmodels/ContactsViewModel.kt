@@ -16,7 +16,13 @@ class ContactsViewModel(private val repository: ContactsRepository) : ViewModel(
     // actions
     fun enroll() {
         viewModelScope.launch {
-            // TODO
+            try {
+                repository.enroll()
+            } catch (e: Exception) {
+                // TODO
+                // Gérez les erreurs d'enrollment ici (par ex., afficher un Toast dans l'UI)
+                println("Enrollment error: ${e.message}")
+            }
         }
     }
 
