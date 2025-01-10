@@ -12,6 +12,7 @@ import ch.heigvd.iict.and.rest.R
 import ch.heigvd.iict.and.rest.databinding.FragmentCreateContactBinding
 import ch.heigvd.iict.and.rest.models.Contact
 import ch.heigvd.iict.and.rest.models.PhoneType
+import ch.heigvd.iict.and.rest.models.Status
 import ch.heigvd.iict.and.rest.viewmodels.ContactsViewModel
 import java.util.*
 
@@ -97,7 +98,7 @@ class CreateContactFragment : Fragment() {
                 city = city.ifEmpty { null },
                 type = selectedPhoneType,
                 phoneNumber = phoneNumber.ifEmpty { null },
-                syncStatus = false
+                status = Status.NEW
             )
 
             // Save the contact via ViewModel

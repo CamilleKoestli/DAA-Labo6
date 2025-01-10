@@ -9,7 +9,7 @@ object ApiClient {
     private const val BASE_URL = "https://daa.iict.ch"
 
     private val gson = GsonBuilder()
-        .setLenient() // Permet d'accepter les JSON mal formés
+        .setLenient()
         .create()
 
     // Logs the body of requests/responses

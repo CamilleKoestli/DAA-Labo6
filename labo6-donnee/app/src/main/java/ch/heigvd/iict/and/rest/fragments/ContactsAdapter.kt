@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import ch.heigvd.iict.and.rest.R
 import ch.heigvd.iict.and.rest.models.Contact
 import ch.heigvd.iict.and.rest.models.PhoneType
+import ch.heigvd.iict.and.rest.models.Status
 
 class ContactsAdapter(contacts : List<Contact>, private val clickListener: OnItemClickListener) : RecyclerView.Adapter<ContactsAdapter.ViewHolder>() {
 
@@ -52,9 +53,10 @@ class ContactsAdapter(contacts : List<Contact>, private val clickListener: OnIte
             phonenumber.text = "${contact.phoneNumber}"
 
             // Change the image color based on sync status
-            val colorRes = if (contact.syncStatus == true) {
+            val colorRes = if (contact.status == Status.OK) {
                 android.R.color.holo_green_dark // Green for synchronized
             } else {
+                // Contact status is either NEW, UPDATED or DELETED
                 android.R.color.holo_orange_dark // Orange for unsynchronized
             }
             image.setColorFilter(ContextCompat.getColor(image.context, colorRes))
@@ -96,7 +98,7 @@ class ContactsDiffCallBack(private val oldList: List<Contact>, private val newLi
                 oldContact.city == newContact.city &&
                 oldContact.type == newContact.type &&
                 oldContact.phoneNumber == newContact.phoneNumber &&
-                oldContact.syncStatus == newContact.syncStatus
+                oldContact.status == newContact.status
     }
 
 }

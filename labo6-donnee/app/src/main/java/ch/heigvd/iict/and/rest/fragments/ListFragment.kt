@@ -40,7 +40,7 @@ class ListFragment : Fragment() {
                     Toast.makeText(requireActivity(), "TODO - Edition de ${selectedContact.firstname} ${selectedContact.name}", Toast.LENGTH_SHORT).show()
 
                     // Set the selected contact in the ViewModel
-                    contactsViewModel.selectContact(selectedContact)
+                    selectedContact.id?.let { contactsViewModel.getContactById(it) }
 
                     // Navigate to the ContactEditFragment
                     navigateToContactEditFragment()

@@ -14,6 +14,7 @@ import ch.heigvd.iict.and.rest.R
 import ch.heigvd.iict.and.rest.databinding.FragmentEditContactBinding
 import ch.heigvd.iict.and.rest.models.Contact
 import ch.heigvd.iict.and.rest.models.PhoneType
+import ch.heigvd.iict.and.rest.models.Status
 import ch.heigvd.iict.and.rest.viewmodels.ContactsViewModel
 
 class EditContactFragment : Fragment(R.layout.fragment_create_contact) {
@@ -68,7 +69,7 @@ class EditContactFragment : Fragment(R.layout.fragment_create_contact) {
         // Bouton Delete (suppression du contact)
         binding.deleteButton.setOnClickListener {
             contactId?.let {
-                viewModel.deleteContactById(it)
+                viewModel.softDeleteContactById(it)
                 Toast.makeText(requireContext(), "Contact deleted", Toast.LENGTH_SHORT).show()
 
                 // Démarrer MainActivity avec une Intent
@@ -123,7 +124,7 @@ class EditContactFragment : Fragment(R.layout.fragment_create_contact) {
             city = binding.city.text.toString().trim().ifEmpty { null },
             type = getSelectedPhoneType(),
             phoneNumber = phoneNumber,
-            syncStatus = false
+            status = Status.UPDATED
         )
     }
 

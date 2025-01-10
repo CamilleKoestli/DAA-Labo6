@@ -8,6 +8,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import ch.heigvd.iict.and.rest.models.Contact
+import ch.heigvd.iict.and.rest.models.Status
 
 @Dao
 interface ContactsDao {
@@ -23,25 +24,27 @@ interface ContactsDao {
     @Update
     fun update(contact: Contact)
 
-    @Delete
-    fun delete(contact: Contact)
-
-    @Query("DELETE FROM Contact WHERE id = :id")
-    suspend fun deleteContactById(id: Long)
-
     @Query("SELECT * FROM Contact")
     fun getAllContactsLiveData() : LiveData<List<Contact>>
-
-    @Query("SELECT * FROM Contact")
-    fun getAllContacts() : List<Contact>
 
     @Query("SELECT * FROM Contact WHERE id = :id")
     fun getContactById(id : Long) : LiveData<Contact?>
 
-    @Query("SELECT COUNT(*) FROM Contact")
-    fun getCount() : Int
+    @Query("SELECT * FROM Contact WHERE status IN ('NEW', 'UPDATED', 'DELETED')")
+    suspend fun getContactsToSync() : List<Contact>
+
+    @Query("UPDATE Contact SET status = :status WHERE id = :id")
+    fun softDelete(id : Long, status: Status)
+
+    // Hard delete after deleted from server
+    @Delete
+    fun hardDelete(contact: Contact)
+
+
 
     @Query("DELETE FROM Contact")
     fun clearAllContacts()
 
+    @Query("SELECT COUNT(*) FROM Contact")
+    fun getCount() : Int
 }

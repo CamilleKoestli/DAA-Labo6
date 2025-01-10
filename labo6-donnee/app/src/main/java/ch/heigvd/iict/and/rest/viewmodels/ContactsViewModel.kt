@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import ch.heigvd.iict.and.rest.repository.ContactsRepository
 import ch.heigvd.iict.and.rest.models.Contact
@@ -20,8 +19,6 @@ class ContactsViewModel(private val repository: ContactsRepository) : ViewModel(
             try {
                 repository.enroll()
             } catch (e: Exception) {
-                // TODO
-                // Gérez les erreurs d'enrollment ici (par ex., afficher un Toast dans l'UI)
                 println("Enrollment error: ${e.message}")
             }
         }
@@ -30,6 +27,11 @@ class ContactsViewModel(private val repository: ContactsRepository) : ViewModel(
     fun refresh() {
         viewModelScope.launch {
             // TODO
+            try {
+                repository.refresh()
+            } catch (e: Exception) {
+                println("Refresh error: ${e.message}")
+            }
         }
     }
 
@@ -45,36 +47,21 @@ class ContactsViewModel(private val repository: ContactsRepository) : ViewModel(
         }
     }
 
-    fun delete(contact: Contact) {
+    // TODO ptt pas necessaire ici
+    fun hardDelete(contact: Contact) {
         viewModelScope.launch {
-            repository.delete(contact)
+            repository.hardDelete(contact)
         }
     }
 
-    fun deleteContactById(id: Long) {
+    fun softDeleteContactById(id: Long) {
         viewModelScope.launch {
-            repository.deleteContactById(id)
+            repository.softDeleteContactById(id)
         }
     }
 
     fun getContactById(id: Long): LiveData<Contact?> {
         return repository.getContactById(id)
-    }
-
-    // TODO vérifier
-    private val _selectedContact = MutableLiveData<Contact?>()
-    val selectedContact: LiveData<Contact?> get() = _selectedContact
-
-    fun selectContact(contact: Contact?) {
-        _selectedContact.value = contact
-    }
-
-    fun getContact(id: Long): LiveData<Contact?> {
-        var contact = MutableLiveData<Contact?>()
-        viewModelScope.launch {
-            contact.postValue(repository.getContact(id))
-        }
-        return contact
     }
 
 }

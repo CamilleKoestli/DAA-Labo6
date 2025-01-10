@@ -9,7 +9,7 @@ import ch.heigvd.iict.and.rest.database.ContactsDao
 import ch.heigvd.iict.and.rest.database.converters.CalendarConverter
 import ch.heigvd.iict.and.rest.models.Contact
 
-@Database(entities = [Contact::class], version = 4, exportSchema = true)
+@Database(entities = [Contact::class], version = 7, exportSchema = true)
 @TypeConverters(CalendarConverter::class)
 abstract class ContactsDatabase : RoomDatabase() {
 
