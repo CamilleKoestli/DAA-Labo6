@@ -33,12 +33,16 @@ interface ContactsDao {
     @Query("SELECT * FROM Contact WHERE status IN ('NEW', 'UPDATED', 'DELETED')")
     suspend fun getContactsToSync() : List<Contact>
 
+    // Suppression douce (soft delete)
     @Query("UPDATE Contact SET status = :status WHERE id = :id")
-    fun softDelete(id : Long, status: Status)
+    suspend fun softDelete(id: Long, status: Status = Status.DELETED)
 
-    // Hard delete after deleted from server
+    // Suppression définitive (hard delete)
     @Delete
-    fun hardDelete(contact: Contact)
+    suspend fun hardDelete(contact: Contact)
+
+    @Query("DELETE FROM Contact WHERE id = :id")
+    suspend fun hardDeleteById(id: Long)
 
 
 

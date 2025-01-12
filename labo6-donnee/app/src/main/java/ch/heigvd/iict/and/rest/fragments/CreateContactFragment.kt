@@ -17,10 +17,8 @@ import ch.heigvd.iict.and.rest.viewmodels.ContactsViewModel
 import java.util.*
 
 class CreateContactFragment : Fragment() {
-
     private var _binding: FragmentCreateContactBinding? = null
     private val binding get() = _binding!!
-
     private lateinit var viewModel: ContactsViewModel
     private var selectedPhoneType: PhoneType? = null
     private var selectedBirthday: Calendar? = null
@@ -55,9 +53,9 @@ class CreateContactFragment : Fragment() {
             val year = calendar.get(Calendar.YEAR)
             val month = calendar.get(Calendar.MONTH)
             val day = calendar.get(Calendar.DAY_OF_MONTH)
-
             DatePickerDialog(requireContext(), { _, selectedYear, selectedMonth, selectedDay ->
-                val selectedDate = String.format("%02d/%02d/%04d", selectedDay, selectedMonth + 1, selectedYear)
+                val selectedDate =
+                    String.format("%02d/%02d/%04d", selectedDay, selectedMonth + 1, selectedYear)
                 binding.birthday.setText(selectedDate)
                 selectedBirthday = Calendar.getInstance().apply {
                     set(selectedYear, selectedMonth, selectedDay)
@@ -68,13 +66,7 @@ class CreateContactFragment : Fragment() {
         // Save button click logic
         binding.createButton.setOnClickListener {
             val name = binding.name.text.toString().trim()
-            val firstname = binding.firstname.text.toString().trim()
-            val email = binding.email.text.toString().trim()
-            val address = binding.address.text.toString().trim()
-            val zip = binding.zip.text.toString().trim()
-            val city = binding.city.text.toString().trim()
             val phoneNumber = binding.phoneNumber.text.toString().trim()
-            val birthday = binding.birthday.text.toString().trim()
 
             // Validate input
             if (name.isEmpty() || phoneNumber.isEmpty()) {
@@ -90,24 +82,32 @@ class CreateContactFragment : Fragment() {
             val newContact = Contact(
                 id = null,
                 name = name,
-                firstname = firstname.ifEmpty { null },
+                firstname = binding.firstname.text.toString().trim().ifEmpty { null },
                 birthday = selectedBirthday?.toFormattedString(),
-                email = email.ifEmpty { null },
-                address = address.ifEmpty { null },
-                zip = zip.ifEmpty { null },
-                city = city.ifEmpty { null },
+                email = binding.email.text.toString().trim().ifEmpty { null },
+                address = binding.address.text.toString().trim().ifEmpty { null },
+                zip = binding.zip.text.toString().trim().ifEmpty { null },
+                city = binding.city.text.toString().trim().ifEmpty { null },
                 type = selectedPhoneType,
                 phoneNumber = phoneNumber.ifEmpty { null },
                 status = Status.NEW
             )
 
             // Save the contact via ViewModel
-            viewModel.insert(newContact)
-
-            // Navigate back or close
-            Toast.makeText(requireContext(), getString(R.string.app_name), Toast.LENGTH_SHORT)
-                .show()
-            requireActivity().onBackPressedDispatcher.onBackPressed()
+            viewModel.insert(newContact) { insertedId ->
+                if (isAdded) {
+                    Toast.makeText(
+                        requireContext(),
+                        "Contact created with ID: $insertedId",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    view?.post {
+                        if (isAdded) {
+                            requireActivity().onBackPressedDispatcher.onBackPressed()
+                        }
+                    }
+                }
+            }
         }
 
         // Cancel button logic
@@ -117,15 +117,12 @@ class CreateContactFragment : Fragment() {
         }
     }
 
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null // Avoid memory leaks
     }
 
-    /**
-     * Helper function to format Calendar to "dd/mm/yyyy".
-     */
+    /** Helper function to format Calendar to "dd/mm/yyyy". */
     private fun Calendar?.toFormattedString(): String? {
         if (this == null) return null
         val day = get(Calendar.DAY_OF_MONTH)
@@ -133,5 +130,4 @@ class CreateContactFragment : Fragment() {
         val year = get(Calendar.YEAR)
         return String.format("%02d/%02d/%04d", day, month, year)
     }
-
 }

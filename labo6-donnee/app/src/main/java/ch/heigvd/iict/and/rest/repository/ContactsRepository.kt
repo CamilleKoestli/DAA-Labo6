@@ -25,20 +25,24 @@ class ContactsRepository(
 
     // LOCAL MODIFICATIONS
 
-    suspend fun insert(contact: Contact) {
-        contactsDao.insert(contact)
+    suspend fun insert(contact: Contact): Long {
+        return contactsDao.insert(contact)
     }
 
     suspend fun update(contact: Contact) {
         contactsDao.update(contact)
     }
 
-    suspend fun hardDelete(contact: Contact) {
+    suspend fun softDeleteContactById(id: Long) {
+        contactsDao.softDelete(id)
+    }
+
+    suspend fun hardDeleteContact(contact: Contact) {
         contactsDao.hardDelete(contact)
     }
 
-    suspend fun softDeleteContactById(id: Long) {
-        contactsDao.softDelete(id, Status.DELETED)
+    suspend fun hardDeleteContactById(id: Long) {
+        contactsDao.hardDeleteById(id)
     }
 
     fun getContactById(id: Long): LiveData<Contact?> {

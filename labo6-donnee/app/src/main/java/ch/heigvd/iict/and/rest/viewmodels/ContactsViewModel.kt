@@ -1,5 +1,6 @@
 package ch.heigvd.iict.and.rest.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -35,11 +36,17 @@ class ContactsViewModel(private val repository: ContactsRepository) : ViewModel(
         }
     }
 
-    fun insert(newContact: Contact) {
+    fun insert(contact: Contact, onResult: (Long) -> Unit) {
         viewModelScope.launch {
-            repository.insert(newContact)
+            try {
+                val insertedId = repository.insert(contact) // Retourne l'ID
+                onResult(insertedId) // Appelez le callback avec l'ID
+            } catch (e: Exception) {
+                Log.e("ContactsViewModel", "Error inserting contact", e)
+            }
         }
     }
+
 
     fun updateContact(contact: Contact) {
         viewModelScope.launch {
@@ -47,16 +54,36 @@ class ContactsViewModel(private val repository: ContactsRepository) : ViewModel(
         }
     }
 
-    // TODO ptt pas necessaire ici
-    fun hardDelete(contact: Contact) {
+    fun softDeleteContactById(id: Long) {
         viewModelScope.launch {
-            repository.hardDelete(contact)
+            try {
+                repository.softDeleteContactById(id)
+            } catch (e: Exception) {
+                // Log error or show Toast
+                println("Error performing soft delete: ${e.message}")
+            }
         }
     }
 
-    fun softDeleteContactById(id: Long) {
+    fun hardDeleteContact(contact: Contact) {
         viewModelScope.launch {
-            repository.softDeleteContactById(id)
+            try {
+                repository.hardDeleteContact(contact)
+            } catch (e: Exception) {
+                // Log error or show Toast
+                println("Error performing hard delete: ${e.message}")
+            }
+        }
+    }
+
+    fun hardDeleteContactById(id: Long) {
+        viewModelScope.launch {
+            try {
+                repository.hardDeleteContactById(id)
+            } catch (e: Exception) {
+                // Log error or show Toast
+                println("Error performing hard delete by ID: ${e.message}")
+            }
         }
     }
 
