@@ -34,9 +34,9 @@ interface ContactsDao {
     suspend fun getContactsToSync() : List<Contact>
 
     // Suppression douce (soft delete)
-    @Query("UPDATE Contact SET status = :status WHERE id = :id")
-    suspend fun softDelete(id: Long, status: Status = Status.DELETED)
-
+    @Query("UPDATE Contact SET status = 'DELETED' WHERE id = :id")
+    suspend fun softDelete(id: Long)
+    
     // Suppression définitive (hard delete)
     @Delete
     suspend fun hardDelete(contact: Contact)

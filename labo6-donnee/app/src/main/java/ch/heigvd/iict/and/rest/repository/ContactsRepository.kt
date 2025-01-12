@@ -17,7 +17,7 @@ class ContactsRepository(
     private val context: Context
 ) {
 
-    val allContacts = contactsDao.getAllContactsLiveData()
+    fun getAllContacts() = contactsDao.getAllContactsLiveData()
 
     companion object {
         private val TAG = "ContactsRepository"
@@ -45,9 +45,7 @@ class ContactsRepository(
         contactsDao.hardDeleteById(id)
     }
 
-    fun getContactById(id: Long): LiveData<Contact?> {
-        return contactsDao.getContactById(id)
-    }
+    fun getContactById(contactId: Long) = contactsDao.getContactById(contactId)
 
     // REMOTE MODIFICATIONS
 

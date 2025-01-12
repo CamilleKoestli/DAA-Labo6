@@ -8,11 +8,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import ch.heigvd.iict.and.rest.repository.ContactsRepository
 import ch.heigvd.iict.and.rest.models.Contact
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class ContactsViewModel(private val repository: ContactsRepository) : ViewModel() {
 
-    val allContacts = repository.allContacts
+    val allContacts = repository.getAllContacts()
 
     // actions
     fun enroll() {
@@ -49,13 +50,13 @@ class ContactsViewModel(private val repository: ContactsRepository) : ViewModel(
 
 
     fun updateContact(contact: Contact) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             repository.update(contact)
         }
     }
 
     fun softDeleteContactById(id: Long) {
-        viewModelScope.launch {
+        viewModelScope.launch (Dispatchers.IO) {
             try {
                 repository.softDeleteContactById(id)
             } catch (e: Exception) {
@@ -87,9 +88,7 @@ class ContactsViewModel(private val repository: ContactsRepository) : ViewModel(
         }
     }
 
-    fun getContactById(id: Long): LiveData<Contact?> {
-        return repository.getContactById(id)
-    }
+    fun getContactById(contactId: Long) = repository.getContactById(contactId)
 
 }
 
