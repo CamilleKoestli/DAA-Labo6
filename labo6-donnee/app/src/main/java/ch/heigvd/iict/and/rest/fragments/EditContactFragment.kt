@@ -1,15 +1,13 @@
 package ch.heigvd.iict.and.rest.fragments
 
-import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
-import ch.heigvd.iict.and.rest.MainActivity
 import ch.heigvd.iict.and.rest.R
 import ch.heigvd.iict.and.rest.databinding.FragmentEditContactBinding
 import ch.heigvd.iict.and.rest.models.Contact
@@ -17,19 +15,14 @@ import ch.heigvd.iict.and.rest.models.PhoneType
 import ch.heigvd.iict.and.rest.models.Status
 import ch.heigvd.iict.and.rest.viewmodels.ContactsViewModel
 
-class EditContactFragment : Fragment(R.layout.fragment_create_contact) {
+class EditContactFragment : Fragment() {
 
     private var _binding: FragmentEditContactBinding? = null
     private val binding get() = _binding!!
-
     private lateinit var viewModel: ContactsViewModel
     private var contactId: Long? = null
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentEditContactBinding.inflate(inflater, container, false)
         viewModel = ViewModelProvider(requireActivity())[ContactsViewModel::class.java]
         return binding.root
@@ -38,71 +31,73 @@ class EditContactFragment : Fragment(R.layout.fragment_create_contact) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Récupération des arguments (ID du contact)
+        // Récupération de l'ID du contact
         contactId = arguments?.getLong("contactId")
+        Log.d("EditContactFragment", "Contact ID received: $contactId")
+
+        if (contactId == null) {
+            Log.e("EditContactFragment", "Contact ID is null")
+            Toast.makeText(requireContext(), "Contact ID is missing!", Toast.LENGTH_SHORT).show()
+            requireActivity().supportFragmentManager.popBackStack()
+            return
+        }
 
         // Charger les données du contact
-        if (contactId != null) {
-            viewModel.getContactById(contactId!!).observe(viewLifecycleOwner) { contact ->
-                if (contact != null) {
-                    bindContactData(contact)
-                } else {
-                    Toast.makeText(requireContext(), "Contact not found", Toast.LENGTH_SHORT).show()
-                    findNavController().navigateUp() // Retour si le contact n'existe pas
-                }
+        viewModel.getContactById(contactId!!).observe(viewLifecycleOwner) { contact ->
+            if (contact != null) {
+                Log.d("EditContactFragment", "Contact found: $contact")
+                bindContactData(contact)
+            } else {
+                Log.e("EditContactFragment", "Contact not found for ID: $contactId")
+                Toast.makeText(requireContext(), "Contact not found", Toast.LENGTH_SHORT).show()
+                requireActivity().supportFragmentManager.popBackStack()
             }
         }
 
-        // Bouton Save (mise à jour des données)
+        setupButtonListeners()
+    }
+
+    private fun setupButtonListeners() {
         binding.saveButton.setOnClickListener {
             val updatedContact = getContactFromForm()
             if (updatedContact != null) {
                 updatedContact.id = contactId
                 viewModel.updateContact(updatedContact)
                 Toast.makeText(requireContext(), "Contact updated successfully", Toast.LENGTH_SHORT).show()
-                findNavController().navigateUp()
+                requireActivity().supportFragmentManager.popBackStack()
             } else {
                 Toast.makeText(requireContext(), "Please fill all required fields", Toast.LENGTH_SHORT).show()
             }
         }
 
-        // Bouton Delete (suppression du contact)
         binding.deleteButton.setOnClickListener {
             contactId?.let {
                 viewModel.softDeleteContactById(it)
                 Toast.makeText(requireContext(), "Contact deleted", Toast.LENGTH_SHORT).show()
-
-                // Démarrer MainActivity avec une Intent
-                val intent = Intent(requireContext(), MainActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
-                startActivity(intent)
-
-                // Fermer l'activité ou fragment actuel
-                requireActivity().finish()
+                requireActivity().supportFragmentManager.popBackStack()
             }
         }
 
-        // Bouton Cancel (annulation)
         binding.cancelButton.setOnClickListener {
-            findNavController().navigateUp()
+            requireActivity().supportFragmentManager.popBackStack()
         }
     }
 
     private fun bindContactData(contact: Contact) {
         binding.name.setText(contact.name)
-        binding.firstname.setText(contact.firstname)
-        binding.email.setText(contact.email)
-        binding.birthday.setText(contact.birthday)
-        binding.address.setText(contact.address)
-        binding.zip.setText(contact.zip)
-        binding.city.setText(contact.city)
-        binding.phoneNumber.setText(contact.phoneNumber)
+        binding.firstname.setText(contact.firstname ?: "")
+        binding.email.setText(contact.email ?: "")
+        binding.birthday.setText(contact.birthday ?: "")
+        binding.address.setText(contact.address ?: "")
+        binding.zip.setText(contact.zip ?: "")
+        binding.city.setText(contact.city ?: "")
+        binding.phoneNumber.setText(contact.phoneNumber ?: "")
         when (contact.type) {
             PhoneType.HOME -> binding.radioGroupPhoneType.check(R.id.radio_home)
             PhoneType.OFFICE -> binding.radioGroupPhoneType.check(R.id.radio_office)
             PhoneType.MOBILE -> binding.radioGroupPhoneType.check(R.id.radio_mobile)
             PhoneType.FAX -> binding.radioGroupPhoneType.check(R.id.radio_fax)
-            else -> binding.radioGroupPhoneType.clearCheck() // Aucun bouton sélectionné
+            else -> binding.radioGroupPhoneType.clearCheck()
         }
     }
 
@@ -110,7 +105,6 @@ class EditContactFragment : Fragment(R.layout.fragment_create_contact) {
         val name = binding.name.text.toString().trim()
         val phoneNumber = binding.phoneNumber.text.toString().trim()
 
-        // Validation des champs requis
         if (name.isEmpty() || phoneNumber.isEmpty()) return null
 
         return Contact(
@@ -140,6 +134,6 @@ class EditContactFragment : Fragment(R.layout.fragment_create_contact) {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null // Éviter les fuites de mémoire
+        _binding = null
     }
 }
