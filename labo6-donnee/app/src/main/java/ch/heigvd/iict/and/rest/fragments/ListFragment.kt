@@ -48,6 +48,7 @@ class ListFragment : Fragment() {
         binding.listRecycler.adapter = adapter
         binding.listRecycler.layoutManager = LinearLayoutManager(requireContext())
 
+        // TODO activeContacts doesn't work why ?
         contactsViewModel.allContacts.observe(viewLifecycleOwner) { updatedContacts ->
             adapter.contacts = updatedContacts
             if (updatedContacts.isEmpty()) {

@@ -19,6 +19,8 @@ class ContactsRepository(
 
     fun getAllContacts() = contactsDao.getAllContactsLiveData()
 
+    fun getActiveContacts() = contactsDao.getActiveContactsLiveData()
+
     companion object {
         private val TAG = "ContactsRepository"
     }

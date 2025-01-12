@@ -15,6 +15,9 @@ class ContactsViewModel(private val repository: ContactsRepository) : ViewModel(
 
     val allContacts = repository.getAllContacts()
 
+    val activeContacts: LiveData<List<Contact>> = repository.getActiveContacts()
+
+
     // actions
     fun enroll() {
         viewModelScope.launch {
