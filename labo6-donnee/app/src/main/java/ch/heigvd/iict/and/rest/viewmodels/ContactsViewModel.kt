@@ -43,8 +43,8 @@ class ContactsViewModel(private val repository: ContactsRepository) : ViewModel(
     fun insert(contact: Contact, onResult: (Long) -> Unit) {
         viewModelScope.launch {
             try {
-                val insertedId = repository.insert(contact) // Retourne l'ID
-                onResult(insertedId) // Appelez le callback avec l'ID
+                val insertedId = repository.insert(contact) // Assurez-vous que cela retourne un Long
+                onResult(insertedId) // Passe l'ID inséré au callback
             } catch (e: Exception) {
                 Log.e("ContactsViewModel", "Error inserting contact", e)
             }
@@ -72,7 +72,7 @@ class ContactsViewModel(private val repository: ContactsRepository) : ViewModel(
     fun hardDeleteContact(contact: Contact) {
         viewModelScope.launch {
             try {
-                repository.hardDeleteContact(contact)
+                repository.hardDelete(contact)
             } catch (e: Exception) {
                 // Log error or show Toast
                 println("Error performing hard delete: ${e.message}")
@@ -83,7 +83,7 @@ class ContactsViewModel(private val repository: ContactsRepository) : ViewModel(
     fun hardDeleteContactById(id: Long) {
         viewModelScope.launch {
             try {
-                repository.hardDeleteContactById(id)
+                repository.softDeleteContactById(id)
             } catch (e: Exception) {
                 // Log error or show Toast
                 println("Error performing hard delete by ID: ${e.message}")

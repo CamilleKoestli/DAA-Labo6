@@ -26,9 +26,9 @@ class ContactsRepository(
 
     // LOCAL MODIFICATIONS
 
-    suspend fun insert(contact: Contact) {
-        contactsDao.insert(contact)
+    suspend fun insert(contact: Contact): Long {
         Log.d("Insert", "Contact inserted: $contact")
+        return contactsDao.insert(contact)
     }
 
     suspend fun update(contact: Contact) {
