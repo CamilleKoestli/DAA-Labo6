@@ -21,6 +21,7 @@ class EditContactFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var viewModel: ContactsViewModel
     private var contactId: Long? = null
+    private var remoteId: Long? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentEditContactBinding.inflate(inflater, container, false)
@@ -60,9 +61,8 @@ class EditContactFragment : Fragment() {
     private fun setupButtonListeners() {
         binding.saveButton.setOnClickListener {
             val updatedContact = getContactFromForm()
+            Log.d("EditContactFragment", "Save contact: $updatedContact")
             if (updatedContact != null) {
-                updatedContact.id = contactId
-                updatedContact.status = Status.UPDATED
                 viewModel.updateContact(updatedContact)
                 Toast.makeText(requireContext(), "Contact updated successfully", Toast.LENGTH_SHORT).show()
                 requireActivity().supportFragmentManager.popBackStack()
@@ -85,6 +85,7 @@ class EditContactFragment : Fragment() {
     }
 
     private fun bindContactData(contact: Contact) {
+        remoteId = contact.remote_id
         binding.name.setText(contact.name)
         binding.firstname.setText(contact.firstname ?: "")
         binding.email.setText(contact.email ?: "")
@@ -109,7 +110,8 @@ class EditContactFragment : Fragment() {
         if (name.isEmpty() || phoneNumber.isEmpty()) return null
 
         return Contact(
-            id = null,
+            id = contactId,
+            remote_id = remoteId,
             name = name,
             firstname = binding.firstname.text.toString().trim().ifEmpty { null },
             email = binding.email.text.toString().trim().ifEmpty { null },

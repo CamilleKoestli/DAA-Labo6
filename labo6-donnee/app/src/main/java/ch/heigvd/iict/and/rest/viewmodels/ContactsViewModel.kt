@@ -53,7 +53,13 @@ class ContactsViewModel(private val repository: ContactsRepository) : ViewModel(
 
     fun updateContact(contact: Contact) {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.update(contact)
+            Log.d("Update", "Contact updated: $contact")
+            if (contact.remote_id == null){
+                var remote_id = repository.insert(contact)
+                contact.remote_id = remote_id
+            } else {
+                repository.update(contact)
+            }
         }
     }
 
@@ -79,7 +85,9 @@ class ContactsViewModel(private val repository: ContactsRepository) : ViewModel(
         }
     }
 
-    fun getContactById(contactId: Long) = repository.getContactById(contactId)
+    fun getContactById(id: Long): LiveData<Contact?> {
+        return repository.getContactById(id)
+    }
 
 }
 

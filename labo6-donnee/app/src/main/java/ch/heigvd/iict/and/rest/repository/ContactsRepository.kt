@@ -33,9 +33,16 @@ class ContactsRepository(
 
     suspend fun update(contact: Contact) {
         contact.status = Status.UPDATED
+
+        Log.d("Update", "Contact updated: $contact")
         val serverContact = ServerContact.toServerContact(contact)
-        val response = ApiClient.service.updateContact(contact.id!!, serverContact).execute()
+        Log.d("RepoUpdate", "ServerContact: $serverContact")
+
+        val uuid = SharedPrefsManager.getUUID(context) ?: throw Exception("UUID not found. Perform enrollment first.")
+
+        val response = ApiClient.service.updateContact(uuid, contact.remote_id!!, serverContact).execute()
         if (!response.isSuccessful) {
+            Log.e("UpdateContact", "Failed response: ${response.errorBody()?.string()}")
             throw Exception("Failed to update contact (local id = ${contact.id} and remote id = ${contact.remote_id}): ${response.errorBody()?.string()}")
         }
         contact.status = Status.OK
@@ -138,7 +145,7 @@ class ContactsRepository(
                     Log.d("Sync", "Synchronizing updated contacts...")
                     contactsToSync.filter { it.status == Status.UPDATED }.forEach { contact ->
                         val serverContact = ServerContact.toServerContact(contact)
-                        val response = ApiClient.service.updateContact(contact.id!!, serverContact).execute()
+                        val response = ApiClient.service.updateContact(uuid, contact.id!!, serverContact).execute()
                         if (!response.isSuccessful) {
                             throw Exception("Failed to update contact (local id = ${contact.id} and remote id = ${contact.remote_id}): ${response.errorBody()?.string()}")
                         }
@@ -149,7 +156,7 @@ class ContactsRepository(
                     // Deleted contacts sync
                     Log.d("Sync", "Synchronizing deleted contacts...")
                     contactsToSync.filter { it.status == Status.DELETED }.forEach { contact ->
-                        val response = ApiClient.service.deleteContact(contact.id!!).execute()
+                        val response = ApiClient.service.deleteContact(uuid, contact.id!!).execute()
                         if (!response.isSuccessful) {
                             throw Exception("Failed to delete contact (local id = ${contact.id}) and remote id = ${contact.remote_id}): ${response.errorBody()?.string()}")
                         }

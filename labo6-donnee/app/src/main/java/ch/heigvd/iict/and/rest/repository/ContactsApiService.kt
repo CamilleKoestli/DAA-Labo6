@@ -1,4 +1,3 @@
-import ch.heigvd.iict.and.rest.models.Contact
 import ch.heigvd.iict.and.rest.models.ServerContact
 import retrofit2.Call
 import retrofit2.http.*
@@ -23,8 +22,11 @@ interface ContactsApiService {
         @Body contact: ServerContact): Call<ServerContact>
 
     @PUT("/contacts/{id}")
-    fun updateContact(@Path("id") id: Long, @Body contact: ServerContact): Call<ServerContact>
+    fun updateContact(@Header("X-UUID") uuid: String,
+                      @Path("id") remoteId: Long,
+                      @Body contact: ServerContact): Call<ServerContact>
 
     @DELETE("/contacts/{id}")
-    fun deleteContact(@Path("id") id: Long): Call<Void>
+    fun deleteContact(@Header("X-UUID") uuid: String,
+                      @Path("id") remoteId: Long): Call<Void>
 }
