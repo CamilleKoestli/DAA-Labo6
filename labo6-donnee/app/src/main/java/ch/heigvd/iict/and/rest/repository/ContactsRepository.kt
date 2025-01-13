@@ -26,21 +26,28 @@ class ContactsRepository(
 
     // LOCAL MODIFICATIONS
 
-    suspend fun insert(contact: Contact) {
-        contactsDao.insert(contact)
+    suspend fun insert(contact: Contact) : Long {
         Log.d("Insert", "Contact inserted: $contact")
+        return contactsDao.insert(contact)
     }
 
     suspend fun update(contact: Contact) {
+        contact.status = Status.UPDATED
+        val serverContact = ServerContact.toServerContact(contact)
+        val response = ApiClient.service.updateContact(contact.id!!, serverContact).execute()
+        if (!response.isSuccessful) {
+            throw Exception("Failed to update contact (local id = ${contact.id} and remote id = ${contact.remote_id}): ${response.errorBody()?.string()}")
+        }
+        contact.status = Status.OK
         contactsDao.update(contact)
     }
 
-    suspend fun hardDelete(contact: Contact) {
-        contactsDao.hardDelete(contact)
+    suspend fun hardDeleteContact(id: Long) {
+        contactsDao.hardDelete(id)
     }
 
     suspend fun softDeleteContactById(id: Long) {
-        contactsDao.softDelete(id, Status.DELETED)
+        contactsDao.softDelete(id)
     }
 
     fun getContactById(id: Long): LiveData<Contact?> {
@@ -146,7 +153,7 @@ class ContactsRepository(
                         if (!response.isSuccessful) {
                             throw Exception("Failed to delete contact (local id = ${contact.id}) and remote id = ${contact.remote_id}): ${response.errorBody()?.string()}")
                         }
-                        contactsDao.hardDelete(contact)
+                        contactsDao.hardDelete(contact.id!!)
                     }
                 }
             Log.d("Sync", "Synchronization done.")

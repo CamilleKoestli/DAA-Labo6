@@ -38,16 +38,11 @@ interface ContactsDao {
 
     // Suppression douce (soft delete)
     @Query("UPDATE Contact SET status = 'DELETED' WHERE id = :id")
-    suspend fun softDelete(id: Long, deleted: Status)
+    suspend fun softDelete(id: Long)
 
     // Suppression définitive (hard delete)
-    @Delete
-    suspend fun hardDelete(contact: Contact)
-
     @Query("DELETE FROM Contact WHERE id = :id")
-    suspend fun hardDeleteById(id: Long)
-
-
+    suspend fun hardDelete(id: Long)
 
     @Query("DELETE FROM Contact")
     fun clearAllContacts()

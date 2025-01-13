@@ -62,6 +62,7 @@ class EditContactFragment : Fragment() {
             val updatedContact = getContactFromForm()
             if (updatedContact != null) {
                 updatedContact.id = contactId
+                updatedContact.status = Status.UPDATED
                 viewModel.updateContact(updatedContact)
                 Toast.makeText(requireContext(), "Contact updated successfully", Toast.LENGTH_SHORT).show()
                 requireActivity().supportFragmentManager.popBackStack()
