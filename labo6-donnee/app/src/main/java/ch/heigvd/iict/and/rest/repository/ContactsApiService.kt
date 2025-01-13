@@ -1,29 +1,30 @@
 import ch.heigvd.iict.and.rest.models.Contact
+import ch.heigvd.iict.and.rest.models.ServerContact
 import retrofit2.Call
 import retrofit2.http.*
 
 interface ContactsApiService {
 
     @GET("/enroll")
-    suspend fun enroll(): Call<String> // Returns a UUID
+    fun enroll(): Call<String> // Returns a UUID
 
     @GET("/contacts")
-    suspend fun getAllContacts(@Header("X-UUID") uuid: String): Call<List<Contact>>
+    fun getAllContacts(@Header("X-UUID") uuid: String): Call<List<ServerContact>>
 
     @GET("/contacts/{id}")
     suspend fun getContactById(
         @Path("id") id: Long,
         @Header("X-UUID") uuid: String
-    ): Call<Contact>
+    ): Call<ServerContact>
 
     @POST("/contacts")
-    suspend fun createContact(
+    fun createContact(
         @Header("X-UUID") uuid: String,
-        @Body contact: Contact): Call<Contact>
+        @Body contact: ServerContact): Call<ServerContact>
 
     @PUT("/contacts/{id}")
-    suspend fun updateContact(@Path("id") id: Long, @Body contact: Contact): Call<Contact>
+    fun updateContact(@Path("id") id: Long, @Body contact: ServerContact): Call<ServerContact>
 
     @DELETE("/contacts/{id}")
-    suspend fun deleteContact(@Path("id") id: Long): Call<Void>
+    fun deleteContact(@Path("id") id: Long): Call<Void>
 }

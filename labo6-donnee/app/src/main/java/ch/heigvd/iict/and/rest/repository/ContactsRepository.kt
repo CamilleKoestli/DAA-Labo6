@@ -3,14 +3,13 @@ package ch.heigvd.iict.and.rest.repository
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
 import ch.heigvd.iict.and.rest.database.ContactsDao
 import ch.heigvd.iict.and.rest.models.Contact
+import ch.heigvd.iict.and.rest.models.ServerContact
 import ch.heigvd.iict.and.rest.models.Status
 import ch.heigvd.iict.and.rest.utils.SharedPrefsManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import retrofit2.Response
 
 class ContactsRepository(
     private val contactsDao: ContactsDao,
@@ -27,27 +26,26 @@ class ContactsRepository(
 
     // LOCAL MODIFICATIONS
 
-    suspend fun insert(contact: Contact): Long {
-        return contactsDao.insert(contact)
+    suspend fun insert(contact: Contact) {
+        contactsDao.insert(contact)
+        Log.d("Insert", "Contact inserted: $contact")
     }
 
     suspend fun update(contact: Contact) {
         contactsDao.update(contact)
     }
 
-    suspend fun softDeleteContactById(id: Long) {
-        contactsDao.softDelete(id)
-    }
-
-    suspend fun hardDeleteContact(contact: Contact) {
+    suspend fun hardDelete(contact: Contact) {
         contactsDao.hardDelete(contact)
     }
 
-    suspend fun hardDeleteContactById(id: Long) {
-        contactsDao.hardDeleteById(id)
+    suspend fun softDeleteContactById(id: Long) {
+        contactsDao.softDelete(id, Status.DELETED)
     }
 
-    fun getContactById(contactId: Long) = contactsDao.getContactById(contactId)
+    fun getContactById(id: Long): LiveData<Contact?> {
+        return contactsDao.getContactById(id)
+    }
 
     // REMOTE MODIFICATIONS
 
@@ -56,10 +54,11 @@ class ContactsRepository(
         withContext(Dispatchers.IO) {
             try {
                 // 1. Appel à l'API pour obtenir un nouvel UUID
-                val enrollResponse: Response<String> = ApiClient.service.enroll().execute()
+                val enrollResponse = ApiClient.service.enroll().execute()
                 if (!enrollResponse.isSuccessful) {
                     throw Exception("Failed to enroll: ${enrollResponse.errorBody()?.string()}")
                 }
+
                 val newUUID = enrollResponse.body() ?: throw Exception("Empty UUID response")
                 Log.d("Enroll", "new UUID: $newUUID")
 
@@ -77,17 +76,15 @@ class ContactsRepository(
                     throw Exception("Failed to fetch contacts: ${response.errorBody()?.string()}")
                 }
                 val contacts = response.body() ?: emptyList()
-
-                // Set new contact status to OK
-                contacts.forEach{ contact ->
-                    contact.status = Status.OK
-                }
+                Log.i("Enroll", "Imported ${contacts.size} contacts")
 
                 // 5. Insertion des contacts récupérés dans la base de données locale
-                contactsDao.insertAll(contacts)
+                contacts.forEach{ contact ->
+                    val localContact = ServerContact.toContact(contact)
+                    contactsDao.insert(localContact)
+                }
 
             } catch (e: Exception) {
-                // Gérer les erreurs réseau
                 throw Exception("Enrollment failed: ${e.message}")
             }
         }
@@ -95,49 +92,65 @@ class ContactsRepository(
 
     // Synchronising local db with remote db
     suspend fun refresh(){
+
+        Log.d("Sync", "Refreshing contacts...")
         withContext(Dispatchers.IO) {
             try {
+
+                Log.d("Sync", "Getting contacts to sync...")
                 val contactsToSync = contactsDao.getContactsToSync()
-//                val contactsToSync = contactsDao.getContactsToSync().observe(this, Observer{
-//                    contact ->
-//                }
-//                )
 
                 if (contactsToSync.isEmpty()){
                     Log.d("Sync", "Contacts to sync list is empty...")
-                }
+                } else {
+                    Log.d("Sync", "${contactsToSync.size} contacts to sync")
 
-                val uuid = SharedPrefsManager.getUUID(context) ?: throw Exception("UUID not found. Perform enrollment first.")
+                    val uuid = SharedPrefsManager.getUUID(context) ?: throw Exception("UUID not found. Perform enrollment first.")
+                    Log.d("Sync", "Current UUID is $uuid")
 
-                // New contacts sync
-                contactsToSync.filter { it.status == Status.NEW }.forEach { contact ->
-                    val response = ApiClient.service.createContact(uuid, contact).execute()
-                    if (!response.isSuccessful) {
-                        throw Exception("Failed to create new contact (local id = ${contact.id}) and remote id = ${contact.remote_id}): ${response.errorBody()?.string()}")
+                    // New contacts sync
+                    Log.d("Sync", "Synchronizing new contacts...")
+                    contactsToSync.filter { it.status == Status.NEW }.forEach { contact ->
+                        val serverContact = ServerContact.toServerContact(contact)
+
+                        // TODO FIX: Sending null for birthday
+                        serverContact.birthday = null
+                        Log.d("Sync", "Creating new contact: $serverContact")
+
+                        val response = ApiClient.service.createContact(uuid, serverContact).execute()
+                        if (!response.isSuccessful) {
+                            throw Exception("Failed to create new contact (local id = ${contact.id}) and remote id = ${contact.remote_id}): ${response.errorBody()?.string()}")
+                        }
+                        // Update the local contact with the remote id
+                        contact.remote_id = response.body()?.id
+                        contact.status = Status.OK
+                        contactsDao.update(contact)
                     }
-                    contact.id = response.body()?.id
-                    contact.status = Status.OK
-                    contactsDao.update(contact)
-                }
 
-                // Updated contacts sync
-                contactsToSync.filter { it.status == Status.UPDATED }.forEach { contact ->
-                    val response = ApiClient.service.updateContact(contact.id!!, contact).execute()
-                    if (!response.isSuccessful) {
-                        throw Exception("Failed to update contact (local id = ${contact.id} and remote id = ${contact.remote_id}): ${response.errorBody()?.string()}")
+                    // Updated contacts sync
+                    Log.d("Sync", "Synchronizing updated contacts...")
+                    contactsToSync.filter { it.status == Status.UPDATED }.forEach { contact ->
+                        val serverContact = ServerContact.toServerContact(contact)
+                        val response = ApiClient.service.updateContact(contact.id!!, serverContact).execute()
+                        if (!response.isSuccessful) {
+                            throw Exception("Failed to update contact (local id = ${contact.id} and remote id = ${contact.remote_id}): ${response.errorBody()?.string()}")
+                        }
+                        contact.status = Status.OK
+                        contactsDao.update(contact)
                     }
-                    contact.status = Status.OK
-                    contactsDao.update(contact)
-                }
 
-                // Deleted contacts sync
-                contactsToSync.filter { it.status == Status.DELETED }.forEach { contact ->
-                    val response = ApiClient.service.deleteContact(contact.id!!).execute()
-                    if (!response.isSuccessful) {
-                        throw Exception("Failed to delete contact (local id = ${contact.id}) and remote id = ${contact.remote_id}): ${response.errorBody()?.string()}")
+                    // Deleted contacts sync
+                    Log.d("Sync", "Synchronizing deleted contacts...")
+                    contactsToSync.filter { it.status == Status.DELETED }.forEach { contact ->
+                        val response = ApiClient.service.deleteContact(contact.id!!).execute()
+                        if (!response.isSuccessful) {
+                            throw Exception("Failed to delete contact (local id = ${contact.id}) and remote id = ${contact.remote_id}): ${response.errorBody()?.string()}")
+                        }
+                        contactsDao.hardDelete(contact)
                     }
-                    contactsDao.hardDelete(contact)
                 }
+            Log.d("Sync", "Synchronization done.")
+
             } catch (e: Exception) {
                 // Gérer les erreurs réseau
                 Log.e("SyncError", "Failed to synchronize: ${e.message}")
