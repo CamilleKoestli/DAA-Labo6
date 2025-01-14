@@ -1,3 +1,12 @@
+/**
+ * Authors : Koestli Camille / Oliveira Vitoria
+ * Description : This class represents the Room database for storing contact information.
+ *               - It defines a single entity, `Contact`, and its associated DAO, `ContactsDao`.
+ *               - Utilizes the `CalendarConverter` for handling `Calendar` type conversions.
+ *               - Implements a singleton pattern to ensure a single instance of the database is used throughout the app.
+ *               - Includes `fallbackToDestructiveMigration` for handling schema changes by resetting the database.
+ */
+
 package ch.heigvd.iict.and.rest.repository
 
 import android.content.Context
@@ -26,63 +35,12 @@ abstract class ContactsDatabase : RoomDatabase() {
                 val _instance = Room.databaseBuilder(context.applicationContext,
                 ContactsDatabase::class.java, "contacts.db")
                     .fallbackToDestructiveMigration()
-                    //.addCallback(MyDatabaseCallback()) //FIXME - can be removed
                     .build()
 
                 INSTANCE = _instance
                 _instance
             }
         }
-
-        /*//FIXME - can be removed
-        private class MyDatabaseCallback : Callback() {
-            override fun onCreate(db: SupportSQLiteDatabase) {
-                super.onCreate(db)
-                INSTANCE?.let{ database ->
-                    thread {
-                        if(database.contactsDao().getCount() == 0) {
-                            val c1 =  Contact(  id = null,
-                                                name = "Hilt",
-                                                firstname = "William",
-                                                birthday = GregorianCalendar.getInstance().apply {
-                                                    set(Calendar.YEAR, 1997)
-                                                    set(Calendar.MONTH, Calendar.DECEMBER)
-                                                    set(Calendar.DAY_OF_MONTH, 16)
-                                                    set(Calendar.HOUR_OF_DAY, 12)
-                                                    set(Calendar.MINUTE, 0)
-                                                    set(Calendar.SECOND, 0)
-                                                    set(Calendar.MILLISECOND, 0)
-                                                },
-                                                email = "w.hilt@heig-vd.ch",
-                                                address = "Route de Cheseaux 1",
-                                                zip = "1400", city = "Yverdon-les-Bains",
-                                                type = PhoneType.OFFICE, phoneNumber = "024 111 22 33" )
-
-                            val c2 =  Contact(  id = null,
-                                                name = "Fisher",
-                                                firstname = "Brenda",
-                                                birthday = GregorianCalendar.getInstance().apply {
-                                                    set(Calendar.YEAR, 2001)
-                                                    set(Calendar.MONTH, Calendar.JULY)
-                                                    set(Calendar.DAY_OF_MONTH, 9)
-                                                    set(Calendar.HOUR_OF_DAY, 12)
-                                                    set(Calendar.MINUTE, 0)
-                                                    set(Calendar.SECOND, 0)
-                                                    set(Calendar.MILLISECOND, 0)
-                                                },
-                                                email = "b.fisher@heig-vd.ch",
-                                                address = "Avenue des Sports 20",
-                                                zip = "1400", city = "Yverdon-les-Bains",
-                                                type = PhoneType.MOBILE, phoneNumber = "079 111 22 33" )
-
-                            database.contactsDao().insert(c1)
-                            database.contactsDao().insert(c2)
-                        }
-                    }
-                }
-
-            }
-        }*/
 
     }
 

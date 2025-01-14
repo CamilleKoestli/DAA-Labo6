@@ -1,3 +1,10 @@
+/**
+ * Authors : Koestli Camille / Oliveira Vitoria
+ * Description : This fragment displays a list of contacts using a RecyclerView. It listens to updates
+ *               from the ViewModel and updates the list dynamically. Clicking on a contact navigates
+ *               to the EditContactFragment for editing or deleting the contact.
+ */
+
 package ch.heigvd.iict.and.rest.fragments
 
 import android.os.Bundle
@@ -34,10 +41,10 @@ class ListFragment : Fragment() {
         val adapter = ContactsAdapter(emptyList()) { _, _, _, id ->
             Log.d("ListFragment", "Contact clicked with ID: $id")
 
-            // Vérifier si le contact existe dans ViewModel
+            // Verify contact exists
             val selectedContact = contactsViewModel.allContacts.value?.find { it.id == id }
             if (selectedContact != null) {
-                // Passer l'ID au fragment suivant
+                // Passing ID to the EditContactFragment
                 navigateToContactEditFragment(id)
             } else {
                 Log.e("ListFragment", "Contact with ID $id not found!")
@@ -48,7 +55,6 @@ class ListFragment : Fragment() {
         binding.listRecycler.adapter = adapter
         binding.listRecycler.layoutManager = LinearLayoutManager(requireContext())
 
-        // TODO activeContacts doesn't work why ?
         contactsViewModel.allContacts.observe(viewLifecycleOwner) { updatedContacts ->
             adapter.contacts = updatedContacts
             if (updatedContacts.isEmpty()) {

@@ -1,3 +1,10 @@
+/**
+ * Authors : Koestli Camille / Oliveira Vitoria
+ * Description : This data class represents a Contact entity in the local database. It includes both
+ *               local attributes (e.g., id, status) and attributes synchronized with the remote server
+ *               (e.g., remote_id).
+ */
+
 package ch.heigvd.iict.and.rest.models
 
 import androidx.room.Entity

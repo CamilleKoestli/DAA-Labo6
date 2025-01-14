@@ -1,3 +1,9 @@
+/**
+ * Authors : Koestli Camille / Oliveira Vitoria
+ * Description : This interface defines the DAO (Data Access Object) for the Contact entity,
+ *               providing methods for CRUD operations and synchronization.
+ */
+
 package ch.heigvd.iict.and.rest.database
 
 import androidx.lifecycle.LiveData

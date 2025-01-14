@@ -1,3 +1,10 @@
+/**
+ * Authors : Koestli Camille / Oliveira Vitoria
+ * Description : This fragment provides a user interface for creating a new contact.
+ *               It handles input validation, date selection, and interacts with the
+ *               ViewModel to save the new contact to the database.
+ */
+
 package ch.heigvd.iict.and.rest.fragments
 
 import android.app.DatePickerDialog
@@ -122,7 +129,7 @@ class CreateContactFragment : Fragment() {
         _binding = null // Avoid memory leaks
     }
 
-    /** Helper function to format Calendar to "dd/mm/yyyy". */
+    // Helper function to format Calendar to "dd/mm/yyyy"
     private fun Calendar?.toFormattedString(): String? {
         if (this == null) return null
         val day = get(Calendar.DAY_OF_MONTH)

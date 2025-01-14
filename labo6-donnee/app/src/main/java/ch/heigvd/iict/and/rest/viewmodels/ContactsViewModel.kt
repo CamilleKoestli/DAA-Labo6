@@ -1,3 +1,12 @@
+/**
+ * Authors : Koestli Camille / Oliveira Vitoria
+ * Description : The ContactsViewModel class provides a bridge between the ContactsRepository and the UI layer.
+ *               - It manages the lifecycle-aware data fetching for the UI, ensuring proper handling of LiveData.
+ *               - Exposes CRUD operations and synchronization methods to interact with the repository.
+ *               - Uses coroutines in the ViewModel scope to perform background tasks such as network requests and database operations.
+ *               - Implements a factory class for creating instances of the ViewModel with the required repository dependency.
+ */
+
 package ch.heigvd.iict.and.rest.viewmodels
 
 import android.util.Log
@@ -18,7 +27,6 @@ class ContactsViewModel(private val repository: ContactsRepository) : ViewModel(
     val activeContacts: LiveData<List<Contact>> = repository.getActiveContacts()
 
 
-    // actions
     fun enroll() {
         viewModelScope.launch {
             try {
@@ -42,8 +50,8 @@ class ContactsViewModel(private val repository: ContactsRepository) : ViewModel(
     fun insert(contact: Contact, onResult: (Long) -> Unit) {
         viewModelScope.launch {
             try {
-                val insertedId = repository.insert(contact) // Retourne l'ID
-                onResult(insertedId) // Appelez le callback avec l'ID
+                val insertedId = repository.insert(contact) // Return the inserted ID
+                onResult(insertedId) // Call the callback function
             } catch (e: Exception) {
                 Log.e("Insert error", "Error inserting contact", e)
             }
@@ -53,7 +61,6 @@ class ContactsViewModel(private val repository: ContactsRepository) : ViewModel(
 
     fun updateContact(contact: Contact) {
         viewModelScope.launch(Dispatchers.IO) {
-            Log.d("Update", "Contact updated: $contact")
             if (contact.remote_id == null){
                 var remote_id = repository.insert(contact)
                 contact.remote_id = remote_id
@@ -63,24 +70,12 @@ class ContactsViewModel(private val repository: ContactsRepository) : ViewModel(
         }
     }
 
-    fun softDeleteContactById(id: Long) {
-        viewModelScope.launch (Dispatchers.IO) {
-            try {
-                repository.softDeleteContactById(id)
-            } catch (e: Exception) {
-                // Log error or show Toast
-                println("Error performing soft delete: ${e.message}")
-            }
-        }
-    }
-
-    fun hardDeleteContact(id: Long) {
+    fun deleteContact(localId: Long, remoteId: Long) {
         viewModelScope.launch {
             try {
-                repository.hardDeleteContact(id)
+                repository.hardDeleteContact(localId, remoteId)
             } catch (e: Exception) {
-                // Log error or show Toast
-                println("Error performing hard delete: ${e.message}")
+                Log.d("Contact VM delete contact", "Error hard deleting contact", e)
             }
         }
     }

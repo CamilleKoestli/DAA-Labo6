@@ -1,3 +1,11 @@
+/**
+ * Authors : Koestli Camille / Oliveira Vitoria
+ * Description : This data class represents the structure of a contact object as exchanged with the server.
+ *               It includes the fields necessary for server communication. The companion object provides
+ *               utility methods to convert between the local `Contact` entity and the `ServerContact` format
+ *               used for API interactions.
+ */
+
 package ch.heigvd.iict.and.rest.models
 
 data class ServerContact(

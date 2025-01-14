@@ -1,3 +1,10 @@
+/**
+ * Authors : Koestli Camille / Oliveira Vitoria
+ * Description : This fragment handles the editing of an existing contact. It fetches contact data,
+ *               populates the fields, and allows updates or deletion. User actions are synchronized
+ *               with the ViewModel for persistence.
+ */
+
 package ch.heigvd.iict.and.rest.fragments
 
 import android.os.Bundle
@@ -32,25 +39,19 @@ class EditContactFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Récupération de l'ID du contact
+        // Get the contact ID from the arguments
         contactId = arguments?.getLong("contactId")
-        Log.d("EditContactFragment", "Contact ID received: $contactId")
 
         if (contactId == null) {
-            Log.e("EditContactFragment", "Contact ID is null")
-            Toast.makeText(requireContext(), "Contact ID is missing!", Toast.LENGTH_SHORT).show()
             requireActivity().supportFragmentManager.popBackStack()
             return
         }
 
-        // Charger les données du contact
+        // Charge the contact data
         viewModel.getContactById(contactId!!).observe(viewLifecycleOwner) { contact ->
             if (contact != null) {
-                Log.d("EditContactFragment", "Contact found: $contact")
                 bindContactData(contact)
             } else {
-                Log.e("EditContactFragment", "Contact not found for ID: $contactId")
-                Toast.makeText(requireContext(), "Contact not found", Toast.LENGTH_SHORT).show()
                 requireActivity().supportFragmentManager.popBackStack()
             }
         }
@@ -61,10 +62,8 @@ class EditContactFragment : Fragment() {
     private fun setupButtonListeners() {
         binding.saveButton.setOnClickListener {
             val updatedContact = getContactFromForm()
-            Log.d("EditContactFragment", "Save contact: $updatedContact")
             if (updatedContact != null) {
                 viewModel.updateContact(updatedContact)
-                Toast.makeText(requireContext(), "Contact updated successfully", Toast.LENGTH_SHORT).show()
                 requireActivity().supportFragmentManager.popBackStack()
             } else {
                 Toast.makeText(requireContext(), "Please fill all required fields", Toast.LENGTH_SHORT).show()
@@ -73,8 +72,7 @@ class EditContactFragment : Fragment() {
 
         binding.deleteButton.setOnClickListener {
             contactId?.let {
-                viewModel.softDeleteContactById(it)
-                Toast.makeText(requireContext(), "Contact deleted", Toast.LENGTH_SHORT).show()
+                viewModel.deleteContact(contactId!!, remoteId!!)
                 requireActivity().supportFragmentManager.popBackStack()
             }
         }
